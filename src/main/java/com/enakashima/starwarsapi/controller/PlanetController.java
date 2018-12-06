@@ -4,12 +4,16 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,16 +44,26 @@ public class PlanetController {
     public String apiBaseUri;
 	
 	@PostMapping(path="adicionar", produces=MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RetornoDTO<Planeta>> adicionar(@RequestBody Planeta planeta) {
+    public ResponseEntity<RetornoDTO<Planeta>> adicionar(@Valid @RequestBody Planeta planeta, BindingResult errors) {
 		
 		try {
 			
-			RetornoDTO<Planeta> retorno = planetaService.adicionar(planeta);
-			
-			URI localizacaoPlaneta = new URI(apiBaseUri+"/"+retorno.getRetorno().getId());
-			
-			return ResponseEntity.created(localizacaoPlaneta).body(retorno);
-		} catch (SwapiException | PlanetaDuplicadoException | URISyntaxException e ) {
+			if(!errors.hasErrors()) {
+				RetornoDTO<Planeta> retorno = planetaService.adicionar(planeta);
+				URI localizacaoPlaneta = new URI(apiBaseUri+"/"+retorno.getRetorno().getId());
+				return ResponseEntity.created(localizacaoPlaneta).body(retorno);
+			}else {
+				RetornoDTO<Planeta> retornoErro = new RetornoDTO<>();
+				for (FieldError fieldError : errors.getFieldErrors()) {
+					retornoErro.addMensagem(new MensagemDTO(MensagemDTO.ERROR, fieldError.getDefaultMessage()));
+				}
+				return ResponseEntity.badRequest().body(retornoErro);
+			}
+		}catch (PlanetaDuplicadoException e) {
+			RetornoDTO<Planeta> error = new RetornoDTO<>();
+			error.addMensagem(new MensagemDTO(MensagemDTO.ERROR, e.getMessage()));
+			return ResponseEntity.badRequest().body(error);
+		} catch (SwapiException | URISyntaxException e ) {
 			logger.error(e.getMessage(), e);
 			RetornoDTO<Planeta> error = new RetornoDTO<>();
 			error.addMensagem(new MensagemDTO(MensagemDTO.ERROR, e.getMessage()));

@@ -39,12 +39,10 @@ public class PlanetaService {
 		
 		logger.info(planeta.toString());
 		try {
-			planetaRepository.save(planeta);
+			return new RetornoDTO<Planeta>(planetaRepository.save(planeta)); 
 		}catch (DuplicateKeyException e) {
 			throw new PlanetaDuplicadoException("Adicionado este planeta já foi - Mestre YODA", e.getCause());
 		}
-		
-		return new RetornoDTO<Planeta>(planeta);
 	}
 
 	public RetornoDTO<Planeta> buscarPlanetaPorId(String idPlaneta) throws PlanetaNaoEncontradoException {

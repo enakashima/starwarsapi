@@ -65,6 +65,26 @@ public class PlanetaControllerTest {
 	}
 
 	@Test
+	public void quandoAdicionarComParametroInvalido() throws Exception {
+		
+		String planeta = "{\"clima\": \"\",\"terreno\": \"Deserto\"}";
+		String retornoEsperado = "{\"retorno\": null,\"mensagens\": [{\"tipo\": \"ERROR\",\"mensagem\": \"Informe o nome do planeta\"},{\"tipo\": \"ERROR\",\"mensagem\": \"Informe o clima do planeta\"}]}";
+		
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+				.post("/api/starwars/planeta/adicionar")
+				.accept(MediaType.APPLICATION_JSON).content(planeta)
+				.contentType(MediaType.APPLICATION_JSON);
+
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+
+		MockHttpServletResponse response = result.getResponse();
+
+		assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+		
+		JSONAssert.assertEquals(retornoEsperado, response.getContentAsString(), false);
+	}
+	
+	@Test
 	public void quandoAdicionarUmNovoPlaneta() throws Exception {
 		
 		Mockito.when(planetaService.adicionar(Mockito.any())).thenReturn(retornoAdicionarPlaneta);
