@@ -32,8 +32,8 @@ import com.enakashima.starwarsapi.exception.PlanetaNaoEncontradoException;
 import com.enakashima.starwarsapi.service.PlanetaService;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(value = PlanetController.class, secure=false)
-public class PlanetaServiceTest {
+@WebMvcTest(value = PlanetController.class)
+public class PlanetaControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
