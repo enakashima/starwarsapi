@@ -5,7 +5,7 @@ Utilização
 
 Adicionar um planeta
 
-Endpoint: /api/starwars/planeta/adicionar
+Endpoint: /api/starwars/planeta/
 
 Método: POST
 
@@ -21,7 +21,7 @@ Enviar no corpo da requisição um objeto Json no seguinte formato:
 
 Remover um planeta
 
-Endpoint: /api/starwars/planeta/remover/{id_planeta}
+Endpoint: /api/starwars/planeta/{id_planeta}
 
 Método: DELETE
 
@@ -29,7 +29,7 @@ Método: DELETE
 
 Buscar planetas com filtro
 
-Endpoint: /api/starwars/planeta/buscar?nome={nome_planeta}
+Endpoint: /api/starwars/planeta?nome={nome_planeta}
 
 OBS: O parâmetro 'nome' é opcional, não informando-o a api retornará todos os planetas cadastrados.
 
