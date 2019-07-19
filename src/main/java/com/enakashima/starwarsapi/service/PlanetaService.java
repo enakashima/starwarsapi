@@ -25,13 +25,16 @@ import com.enakashima.starwarsapi.repository.PlanetaRepository;
 public class PlanetaService {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
-	
-	@Autowired
+
 	private PlanetaRepository planetaRepository;
-	
-	@Autowired
+
 	private SwapiHelper swapiHelper;
-	
+
+	public PlanetaService(PlanetaRepository planetaRepository, SwapiHelper swapiHelper) {
+		this.planetaRepository = planetaRepository;
+		this.swapiHelper = swapiHelper;
+	}
+
 	public RetornoDTO<Planeta> adicionar(Planeta planeta) throws SwapiException, PlanetaDuplicadoException {
 		
 		Integer quantidadeAparicoes = swapiHelper.buscarQuantidadeAparicoesEmFilmes(planeta.getNome());

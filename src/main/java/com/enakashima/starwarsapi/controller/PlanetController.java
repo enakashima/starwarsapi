@@ -43,7 +43,7 @@ public class PlanetController {
 	@Value("${api.base.uri}")
     public String apiBaseUri;
 	
-	@PostMapping(path="adicionar", produces=MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path="planeta", produces=MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RetornoDTO<Planeta>> adicionar(@Valid @RequestBody Planeta planeta, BindingResult errors) {
 		
 		try {
@@ -71,7 +71,7 @@ public class PlanetController {
 		}
     }
 	
-	@GetMapping(path="/buscar", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(path="planeta", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<RetornoDTO<List<Planeta>>> buscar(@RequestParam(value = "nome", required=false) String nome) {
 			
 		RetornoDTO<List<Planeta>> retorno = planetaService.buscarPlaneta(nome);
@@ -86,7 +86,7 @@ public class PlanetController {
 		return ResponseEntity.accepted().body(retorno);
 	}
 	
-	@GetMapping(path="/{idPlaneta}", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(path="planeta/{idPlaneta}", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<RetornoDTO<Planeta>> buscarPorId(@PathVariable(name = "idPlaneta", required = true) String idPlaneta) {
 		
 		try {
@@ -100,7 +100,7 @@ public class PlanetController {
 		} 
 	}
 	
-	@DeleteMapping(path="remover/{idPlaneta}", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@DeleteMapping(path="planeta/{idPlaneta}", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<RetornoDTO<Planeta>> remover(@PathVariable(name = "idPlaneta", required = true) String idPlaneta) {
 		
 		RetornoDTO<Planeta> retorno;

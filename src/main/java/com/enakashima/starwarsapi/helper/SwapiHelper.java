@@ -43,10 +43,9 @@ public class SwapiHelper {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
 		headers.add("user-agent", userAgent);
-		HttpEntity<String> httpEntity = new HttpEntity<String>("parameters", headers);
-		ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, httpEntity, String.class);
-		
-		return response;
+		HttpEntity<String> httpEntity = new HttpEntity("parameters", headers);
+
+		return restTemplate.exchange(uri, HttpMethod.GET, httpEntity, String.class);
 	}
 	
 	private void validarRetornoApi(ResponseEntity<String> response) throws SwapiException {
